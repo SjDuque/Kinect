@@ -35,7 +35,10 @@ cdef class PyKinectV2Controller:
 
     def wait_for_next_frame(self):
         cdef FrameData result = self.thisptr.wait_for_next_frame()
-        rgb = np.array(result.rgb, dtype=np.uint8).reshape(1080, 1920, 4)
-        ir = np.array(result.ir, dtype=np.float32).reshape(424, 512)
-        depth = np.array(result.depth, dtype=np.float32).reshape(424, 512)
-        return (rgb, ir, depth)
+        cdef unsigned char[:] rgb_view = <unsigned char[:result.rgb.size()]>result.rgb.data()
+        cdef float[:] ir_view = <float[:result.ir.size()]>result.ir.data()
+        cdef float[:] depth_view = <float[:result.depth.size()]>result.depth.data()
+        rgb_np = np.array(rgb_view, dtype=np.uint8).reshape(1080, 1920, 4)
+        ir_np = np.array(ir_view, dtype=np.float32).reshape(424, 512)
+        depth_np = np.array(depth_view, dtype=np.float32).reshape(424, 512)
+        return (rgb_np, ir_np, depth_np)
