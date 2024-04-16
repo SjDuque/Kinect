@@ -44,11 +44,12 @@ FrameData KinectV2Controller::wait_for_next_frame() {
     
     cv::Mat rgbMat(rgb->height, rgb->width, CV_8UC4, rgb->data);
     cv::Mat irMat(ir->height, ir->width, CV_32FC1, ir->data);
+    irMat = irMat / 65535.0f;
     cv::Mat depthMat(depth->height, depth->width, CV_32FC1, depth->data);
 
     if (display) {
         cv::imshow("RGB", rgbMat);
-        cv::imshow("IR", irMat / 65535.0f); // Normalize the IR image
+        cv::imshow("IR", irMat); // Normalize the IR image
         cv::imshow("Depth", depthMat / 100.0f); // Normalize the depth to be visible
         int key = cv::waitKey(1);
         if (key == 'q' || key == 'Q' || key == 27) {
