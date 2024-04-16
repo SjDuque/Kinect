@@ -10,9 +10,12 @@
 #include <libfreenect2/packet_pipeline.h>
 
 struct FrameData {
-    std::vector<unsigned char> rgb;
-    std::vector<float> ir;
-    std::vector<float> depth;
+    unsigned char* rgb_data;
+    size_t rgb_size;
+    float* ir_data;
+    size_t ir_size;
+    float* depth_data;
+    size_t depth_size;
 };
 
 class KinectV2Controller {

@@ -44,7 +44,7 @@ FrameData KinectV2Controller::wait_for_next_frame() {
     
     cv::Mat rgbMat(rgb->height, rgb->width, CV_8UC4, rgb->data);
     cv::Mat irMat(ir->height, ir->width, CV_32FC1, ir->data);
-    irMat = irMat / 65535.0f;
+    irMat /= 65535.0f;
     cv::Mat depthMat(depth->height, depth->width, CV_32FC1, depth->data);
 
     if (display) {
@@ -57,12 +57,16 @@ FrameData KinectV2Controller::wait_for_next_frame() {
         }
     }
     
-    std::vector<unsigned char> rgb_data(rgbMat.data, rgbMat.data + rgbMat.total() * rgbMat.elemSize());
-    std::vector<float> ir_data((float*)irMat.data, (float*)irMat.data + irMat.total());
-    std::vector<float> depth_data((float*)depthMat.data, (float*)depthMat.data + depthMat.total());
+    FrameData result;
+    result.rgb_data = rgbMat.data;
+    result.rgb_size = rgbMat.total() * rgbMat.elemSize();
+    result.ir_data = (float*)irMat.data;
+    result.ir_size = irMat.total();
+    result.depth_data = (float*)depthMat.data;
+    result.depth_size = depthMat.total();
 
     listener.release(frames);
-    return {rgb_data, ir_data, depth_data};
+    return result;
 }
 
 void KinectV2Controller::stop() {

@@ -2,10 +2,10 @@ add_rules("mode.debug", "mode.release")
 
 target("kinect-v2-opencv")
     set_kind("binary")
-    add_files("src/kinect_v2_controller.cpp")
+    add_files("src/cxx/*.cpp")
 
     -- Include directories
-    add_includedirs("/opt/homebrew/include", "src")
+    add_includedirs("/opt/homebrew/include", "include/cxx")
 
     -- Link against libraries
     add_links("freenect2", "opencv_core", "opencv_imgproc", "opencv_highgui", "opencv_videoio")
