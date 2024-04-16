@@ -21,6 +21,7 @@ cdef extern from "kinect_v2_controller.hpp":
         void start()
         void stop()
         FrameData wait_for_next_frame()
+        bint is_running()
 
 cdef class Freenect2:
     cdef KinectV2Controller *thisptr      # hold a C++ instance which we're wrapping
@@ -44,6 +45,10 @@ cdef class Freenect2:
 
     def wait_for_next_frame(self):
         cdef FrameData result = self.thisptr.wait_for_next_frame()
+        
+        if result.rgb_data is NULL or result.ir_data is NULL or result.depth_data is NULL:
+            raise ValueError("Received NULL data from Kinect device")
+            
         cdef unsigned char[:] rgb_view = <unsigned char[:result.rgb_size]>result.rgb_data
         cdef float[:] ir_view = <float[:result.ir_size]>result.ir_data
         cdef float[:] depth_view = <float[:result.depth_size]>result.depth_data
@@ -51,3 +56,6 @@ cdef class Freenect2:
         np.copyto(self.ir_np, np.asarray(ir_view, dtype=np.float32).reshape(424, 512))
         np.copyto(self.depth_np, np.asarray(depth_view, dtype=np.float32).reshape(424, 512))
         return (self.rgb_np, self.ir_np, self.depth_np)
+        
+    def is_running(self):
+                return self.thisptr.is_running()

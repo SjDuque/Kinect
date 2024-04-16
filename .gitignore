@@ -1,9 +1,13 @@
 .vscode/
 .xmake/
 build/
+dist/
+freenect2.egg-info
+freenect2.cython
 # ignore any compiled files
 *.o
 *.out
 *.exe
 *.so
+.DS_Store
 

@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
     try {
         KinectV2Controller kinect(true);
         kinect.start();
-        while (!KinectV2Controller::protonect_shutdown) {
+        while (kinect.is_running()) {
             auto frames = kinect.wait_for_next_frame();
             // Optional: Process frames here
         }

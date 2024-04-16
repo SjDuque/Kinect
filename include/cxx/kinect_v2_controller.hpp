@@ -38,6 +38,10 @@ public:
     void stop();
 
     static bool protonect_shutdown;
+    
+    static bool is_running() {
+        return !protonect_shutdown;
+    }
 
 private:
     libfreenect2::Freenect2 freenect2;

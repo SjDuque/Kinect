@@ -11,7 +11,7 @@ def test_freenect2():
     
     frame_num = 0;
     
-    while True:
+    while kinect.is_running():
         print("Frame#:", frame_num)
         frame_num += 1
         # Get the frames
