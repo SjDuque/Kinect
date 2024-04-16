@@ -1,0 +1,9 @@
+.vscode/
+.xmake/
+build/
+# ignore any compiled files
+*.o
+*.out
+*.exe
+*.so
+
